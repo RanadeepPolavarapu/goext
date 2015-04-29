@@ -8,6 +8,11 @@ import (
 
 func main() {
 	gopath := os.Getenv("GOPATH")
+
+	if len(gopath) == 0 {
+		fmt.Fprintf(os.Stdout, "Error: GOPATH is not set! Please set GOPATH environment variable and try again.\n")
+		os.Exit(1)
+	}
 	// goroot := os.Getenv("GOROOT")
 
 	goPathRead := fmt.Sprintf("%s/src", gopath)
