@@ -8,20 +8,19 @@ import (
 
 func main() {
 	gopath := os.Getenv("GOPATH")
-	goroot := os.Getenv("GOROOT")
-
-	fmt.Println(gopath)
-	fmt.Println(goroot)
+	// goroot := os.Getenv("GOROOT")
 
 	goPathRead := fmt.Sprintf("%s/src", gopath)
 
 	fileList := []string{}
-	err := filepath.Walk(goPathRead, func(path string, f os.FileInfo, err error) error {
-		fileList = append(fileList, path)
+
+	// The required walk Function for the filepath.Walk(...) function.
+	walkFn := func(path string, info os.FileInfo, err error) error {
+		fileList = AppendUniqueStringArray(fileList, filepath.Dir(path))
 		return nil
-	})
-	if err != nil {
-		fmt.Println("err")
+	}
+	if err := filepath.Walk(goPathRead, walkFn); err != nil {
+		fmt.Println("err occurred in filepath Walk!")
 	}
 
 	for _, file := range fileList {
@@ -36,4 +35,13 @@ func GoExtList() {
 
 func GoExtUnget() {
 
+}
+
+func AppendUniqueStringArray(slice []string, s string) []string {
+	for _, element := range slice {
+		if element == s {
+			return slice
+		}
+	}
+	return append(slice, s)
 }
