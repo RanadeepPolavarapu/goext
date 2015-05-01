@@ -21,11 +21,12 @@ func main() {
 
 	// The required walk Function for the filepath.Walk(...) function.
 	walkFn := func(path string, info os.FileInfo, err error) error {
-		fileList = AppendUniqueStringArray(fileList, filepath.Dir(path))
+		dirOnlyPath := filepath.Dir(path)
+		fileList = AppendUniqueStringArray(fileList, dirOnlyPath)
 		return nil
 	}
 	if err := filepath.Walk(goPathRead, walkFn); err != nil {
-		fmt.Println("err occurred in filepath Walk!")
+		fmt.Fprintf(os.Stderr, "Error: err occurred in filepath Walk!\n")
 	}
 
 	for _, file := range fileList {
@@ -42,6 +43,7 @@ func GoExtUnget() {
 
 }
 
+// Utility function to append only unique values into a string array.
 func AppendUniqueStringArray(slice []string, s string) []string {
 	for _, element := range slice {
 		if element == s {
