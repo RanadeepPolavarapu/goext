@@ -6,14 +6,20 @@ import (
 	"path/filepath"
 )
 
+const (
+	EnvVarGOPATH = "GOPATH"
+	EnvVarGOROOT = "GOROOT"
+)
+
 func main() {
-	gopath := os.Getenv("GOPATH")
+	gopath := os.Getenv(EnvVarGOPATH)
 
 	if len(gopath) == 0 {
 		fmt.Fprintf(os.Stderr, "Error: GOPATH is not set! Please set GOPATH environment variable and try again.\n")
 		os.Exit(1)
 	}
-	// goroot := os.Getenv("GOROOT")
+
+	// goroot := os.Getenv(EnvVarGOROOT)
 
 	goPathRead := fmt.Sprintf("%s/src", gopath)
 
